@@ -17,10 +17,7 @@
 //! JSON-RPC related types and helpers.
 
 use super::*;
-use jsonrpsee::{
-	core::{Error as RpcError, RpcResult},
-	proc_macros::rpc,
-};
+use jsonrpsee::{core::Error as RpcError, proc_macros::rpc};
 use pallet_transaction_payment::RuntimeDispatchInfo;
 use sc_transaction_pool_api::TransactionStatus;
 use sp_core::{storage::StorageKey, Bytes};
@@ -132,7 +129,8 @@ impl SharedRpcClient {
 	) -> Result<Self, RpcError> {
 		let client = WsClientBuilder::default()
 			.connection_timeout(connection_timeout)
-			.max_request_body_size(u32::MAX)
+			.max_request_size(u32::MAX)
+			.max_response_size(u32::MAX)
 			.request_timeout(request_timeout)
 			.max_concurrent_requests(u32::MAX as usize)
 			.build(uri)
